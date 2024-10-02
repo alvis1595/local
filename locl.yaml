@@ -1,0 +1,19 @@
+---
+- name: Conectar a un servidor remoto y guardar la salida en localhost
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Ejecutar un comando en el servidor remoto
+      shell: uname -a  # Puedes reemplazar este comando con el que necesites
+      register: command_output
+
+    - name: Mostrar la salida del comando
+      debug:
+        var: command_output.stdout
+
+    - name: Guardar la salida en un archivo local
+      copy:
+        content: "{{ command_output.stdout }}"
+        dest: "{{ output_file_path }}"
+      delegate_to: localhost
